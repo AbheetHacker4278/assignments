@@ -9,13 +9,20 @@ router.post('/signup', async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
     //check user is exist or not
-    await Admin.create({
-        username: username,
-        password: password,
-    })
-    res.send({
-        ServerReply : "Admin Created Successfully"
-    })
+    const exist = await Admin.findOne({username : username});
+    if(exist){
+        res.send({
+            Server: "User already Present in Admin as Same name"
+        })
+    }else{
+        await Admin.create({
+            username: username,
+            password: password,
+        })
+        res.send({
+            ServerReply : "Admin Created Successfully"
+        })
+    }
 });
 
 router.post('/courses',  adminMiddleware, async(req, res) => {
@@ -39,7 +46,7 @@ router.post('/courses',  adminMiddleware, async(req, res) => {
 
 router.get('/courses', adminMiddleware, async (req, res) => {
     // Implement fetching all courses logic
-    const allcourse = await Course.find({})
+    const allcourse = await Course.find({Course})
 
     res.status(200).json({
         ServerReply : "All Courses Are: ",

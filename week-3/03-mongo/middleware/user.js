@@ -14,7 +14,7 @@ function userMiddleware(req, res, next) {
     }).catch((err)=>{
         if(err){
             res.status(404).json({
-                ServerReply : "Admin not Found"
+                ServerReply : "User not Found"
             })
         }
     })
